@@ -4,7 +4,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
 import joblib
 
-df = pd.read_csv('data.csv')
+df = pd.read_csv('mydata.csv')
 
 X = df.drop(['gameId', 'blueWins'], axis=1)
 y = df['blueWins']
