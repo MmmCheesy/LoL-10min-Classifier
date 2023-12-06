@@ -3,7 +3,7 @@ import pandas as pd
 import joblib
 
 # Hide for hiding purposes
-API_KEY = 'RGAPI-b65fc45d-52a8-443b-a100-eee4759331cd'
+API_KEY = ''
 
 # Get encrypted summoner ID
 def get_summoner_id(summoner_name, api_key):
