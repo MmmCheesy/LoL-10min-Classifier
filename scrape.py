@@ -3,10 +3,16 @@ import pandas as pd
 import joblib
 import random
 import time
+import sys
 
-API_KEY = ""
-ELO_TIER = "EMERALD"
-INSTANCES = 100
+API_KEY = "RGAPI-285420a3-4630-4457-8947-93fd54cf65d6"
+if len(sys.argv) < 2:
+    ELO_TIER = "IRON"
+    print("getting iron data")
+else:
+    #DIAMOND, EMERALD, PLATINUM, GOLD, etc
+    ELO_TIER = sys.argv[1]
+    print(f"getting {ELO_TIER.lower()} data")
 
 def get_random_players():
     response = requests.get(f"https://na1.api.riotgames.com/lol/league/v4/entries/RANKED_SOLO_5x5/{ELO_TIER}/I?page=1&api_key={API_KEY}")
@@ -165,7 +171,7 @@ def parse_outcome(match):
     return pd.DataFrame([features])
 
 start_time = time.time()
-random_players = random.sample(get_random_players(), INSTANCES / 20)
+random_players = random.sample(get_random_players(), 100)
 
 all_matches = []
 for player in random_players:
@@ -173,11 +179,15 @@ for player in random_players:
     recent_matches = get_match_list(player_id)
     for match in recent_matches:
         outcome = get_outcome(match)
-        data = parse_outcome(outcome['info'])
+        try:
+            data = parse_outcome(outcome['info'])
+        except:
+            print("exception")
+            continue
         all_matches.append(data)
         time.sleep(1)
 
 cat = pd.concat(all_matches, ignore_index=True)
-cat.to_csv('mydata.csv', index=False)
+cat.to_csv(f'mydata{ELO_TIER.lower()}.csv', mode='a', index=False, header=not pd.io.common.file_exists(f'mydata{ELO_TIER.lower()}.csv'))
 
 print(f"Execution time: {time.time() - start_time} seconds")
