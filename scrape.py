@@ -5,7 +5,7 @@ import random
 import time
 import sys
 
-API_KEY = "RGAPI-285420a3-4630-4457-8947-93fd54cf65d6"
+API_KEY = ""
 if len(sys.argv) < 2:
     ELO_TIER = "IRON"
     print("getting iron data")
